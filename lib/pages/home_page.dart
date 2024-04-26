@@ -12,13 +12,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    getQuote();
+  }
+
   Future getQuote() async {
     final response =
         await http.get(Uri.parse('https://api.quotable.io/random'));
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
-      return Quotes(
-          quote: responseData['content'], author: responseData['author']);
+      return Quotes.fromJson(responseData);
     } else {
       throw Exception('Failed to load quote');
     }
@@ -28,69 +34,69 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     getQuote();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Make My Day',
-          ),
+      appBar: AppBar(
+        title: const Text(
+          'Make My Day',
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 300,
-                height: 400,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Doris Mortman',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                    ),
-                    Divider(
-                      color: Colors.grey.shade700,
-                      thickness: 1,
-                    ),
-                    Text(
-                      'Until you make peace with who you are, you’ll never be content with what you have.',
-                      style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic),
-                    ),
-                  ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 300,
+              height: 400,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Doris Mortman',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                  Divider(
+                    color: Colors.grey.shade700,
+                    thickness: 1,
+                  ),
+                  Text(
+                    'Until you make peace with who you are, you’ll never be content with what you have.',
+                    style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(15)),
+              padding: EdgeInsets.all(30),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            GestureDetector(
+              onTap: () {
+                print('Make My Day');
+              },
+              child: Container(
+                child: Text(
+                  'Make My Day',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(15)),
-                padding: EdgeInsets.all(30),
+                padding: EdgeInsets.all(20),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('Make My Day');
-                },
-                child: Container(
-                  child: Text(
-                    'Make My Day',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(15)),
-                  padding: EdgeInsets.all(20),
-                ),
-              )
-            ],
-          ),
-        ));
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
