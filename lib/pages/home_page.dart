@@ -58,7 +58,9 @@ class HomePage extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 17,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic
+                        ),
                   ),
                   decoration: BoxDecoration(
                       color: Colors.blue,
