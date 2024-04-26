@@ -1,11 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatelessWidget {
+
+  Future getQuote() async {
+    var response = await http.get(Uri.https('api.quotable.io', 'random'));
+    var jsonData = jsonDecode(response.body);
+    print(jsonData);
+  }
+
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    getQuote();
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -36,7 +46,8 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.grey.shade700,
                           fontWeight: FontWeight.w400,
-                          fontSize: 15),
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),
@@ -56,11 +67,10 @@ class HomePage extends StatelessWidget {
                   child: Text(
                     'Make My Day',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic
-                        ),
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   decoration: BoxDecoration(
                       color: Colors.blue,
