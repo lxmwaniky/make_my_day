@@ -2,16 +2,27 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:make_my_day/models/quotes.dart';
 
-class HomePage extends StatelessWidget {
-
-  Future getQuote() async {
-    var response = await http.get(Uri.https('api.quotable.io', 'random'));
-    var jsonData = jsonDecode(response.body);
-    print(jsonData);
-  }
-
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Future getQuote() async {
+    final response =
+        await http.get(Uri.parse('https://api.quotable.io/random'));
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      return Quotes(
+          quote: responseData['content'], author: responseData['author']);
+    } else {
+      throw Exception('Failed to load quote');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
